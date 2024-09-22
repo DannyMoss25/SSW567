@@ -3,12 +3,13 @@ import unittest
 def classify_triangle(a,b,c):
     endMessage = ""
 
-    if (str(type(a)) == "<class 'str'>"):
-        return "STRING VALUE"
-    if (str(type(b)) == "<class 'str'>"):
-        return "STRING VALUE"
-    if (str(type(c)) == "<class 'str'>"):
-        return "STRING VALUE"
+
+    if (str(type(a)) != "<class 'int'>" and str(type(a)) != "<class 'float'>"):
+        return "NOT NUMBER VALUE"
+    if (str(type(b)) != "<class 'int'>" and str(type(b)) != "<class 'float'>"):
+        return "NOT NUMBER VALUE"
+    if (str(type(c)) != "<class 'int'>" and str(type(c)) != "<class 'float'>"):
+        return "NOT NUMBER VALUE"
 
     if(a == 0 or b == 0 or c == 0):
         return "ZERO VALUE"
@@ -23,6 +24,7 @@ def classify_triangle(a,b,c):
     else:
         endMessage += "scalene"
 
+    #Deals with rounding
     c = round(c * c, 3)
     a = round(a * a, 3)
     b = round(b * b, 3)
@@ -61,9 +63,16 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual("isosceles, Right Triange", classify_triangle(8, 8, (2 ** 0.5) * 8))
 
     def test_stringVal(self):
-        self.assertEqual(str("STRING VALUE"), str(classify_triangle("B", 2, 8)))
-        self.assertEqual(str("STRING VALUE"), str(classify_triangle(5, "B", 8)))
-        self.assertEqual(str("STRING VALUE"), str(classify_triangle(3, 2, "C")))
+        self.assertEqual(str("NOT NUMBER VALUE"), str(classify_triangle("B", 2, 8)))
+        self.assertEqual(str("NOT NUMBER VALUE"), str(classify_triangle(5, "B", 8)))
+        self.assertEqual(str("NOT NUMBER VALUE"), str(classify_triangle(3, 2, "C")))
+
+    def test_notNum(self):
+        self.assertEqual(str("NOT NUMBER VALUE"), str(classify_triangle(True, 2, 8)))
+        self.assertEqual(str("NOT NUMBER VALUE"), str(classify_triangle(5,None, 8)))
+        self.assertEqual(str("NOT NUMBER VALUE"), str(classify_triangle(5, 1, None)))
+        self.assertEqual(str("NOT NUMBER VALUE"), str(classify_triangle(None, 1, 2)))
+        self.assertEqual(str("NOT NUMBER VALUE"), str(classify_triangle(3, ["Dog", "Cat", "Bird"], 2)))
 
     def test_zeroVal(self):
         self.assertEqual("ZERO VALUE", classify_triangle(0, 4, 5))
